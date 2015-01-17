@@ -47,3 +47,10 @@ the front of the subject in non-production environment.
 [WHEEL] Forgot password
 [WHEEL STAGING] Forogt password
 ```
+
+#### forward_emails_to
+
+This is a required field.
+
+It can take a single email as string or it can take an array of emails
+in which case emails are forwarded to each of those emails in the array.
