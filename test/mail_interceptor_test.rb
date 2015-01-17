@@ -7,28 +7,28 @@ require 'ostruct'
 require 'mocha/mini_test'
 require_relative './../lib/mail_interceptor'
 
-class TestMailInterceptor < Minitest::Test
+class MailInterceptorTest < Minitest::Test
 
   def setup
     @message = OpenStruct.new
   end
 
-  def test_normalized_regular_expressions
+  def test_normalized_deliver_emails_to
     @interceptor = ::MailInterceptor::Interceptor.new forward_emails_to: 'test@example.com'
-    assert_equal [], @interceptor.regular_expressions
+    assert_equal [], @interceptor.deliver_emails_to
 
     @interceptor = ::MailInterceptor::Interceptor.new forward_emails_to: 'test@example.com',
-                                                       regular_expressions: '@wheel.com'
-    assert_equal ["@wheel.com"], @interceptor.regular_expressions
+                                                       deliver_emails_to: '@wheel.com'
+    assert_equal ["@wheel.com"], @interceptor.deliver_emails_to
 
     @interceptor = ::MailInterceptor::Interceptor.new  forward_emails_to: 'test@example.com',
-                                                        regular_expressions: ['@wheel.com', '@pump.com']
-    assert_equal ["@wheel.com", "@pump.com"], @interceptor.regular_expressions
+                                                        deliver_emails_to: ['@wheel.com', '@pump.com']
+    assert_equal ["@wheel.com", "@pump.com"], @interceptor.deliver_emails_to
   end
 
   def test_invocation_of_regular_expression
     interceptor = ::MailInterceptor::Interceptor.new  forward_emails_to: 'test@example.com',
-                                                        regular_expressions: ['@wheel.com', '@pump.com', 'john@gmail.com']
+                                                        deliver_emails_to: ['@wheel.com', '@pump.com', 'john@gmail.com']
     @message.to = [ 'a@wheel.com', 'b@wheel.com', 'c@pump.com', 'd@club.com', 'e@gmail.com', 'john@gmail.com', 'sam@gmail.com']
     interceptor.delivering_email @message
     assert_equal ["a@wheel.com", "b@wheel.com", "c@pump.com", "test@example.com", "john@gmail.com"], @message.to
