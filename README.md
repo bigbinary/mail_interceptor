@@ -41,9 +41,7 @@ and uppercase and it won't matter.
 #### subject_prefix
 
 __subject_prefix__ is optional. If it is supplied then it is added to
-the front of the subject. In "non production" environment environment
-name is also added.
-
+the front of the subject in non-production environment.
 
 ```
 [WHEEL] Forgot password
