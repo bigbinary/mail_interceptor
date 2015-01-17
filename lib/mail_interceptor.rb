@@ -4,11 +4,11 @@ module MailInterceptor
 
   class Interceptor
 
-    attr_accessor :regular_expressions, :forward_emails_to, :subject_prefix
+    attr_accessor :deliver_emails_to, :forward_emails_to, :subject_prefix
 
 
     def initialize options = {}
-      @regular_expressions  = Array.wrap options[:regular_expressions]
+      @deliver_emails_to  = Array.wrap options[:deliver_emails_to]
       @subject_prefix       = options[:subject_prefix] || ''
       @forward_emails_to    = options.fetch :forward_emails_to
 
@@ -24,10 +24,10 @@ module MailInterceptor
     private
 
     def normalize_recipients recipients
-      return forward_emails_to if regular_expressions.empty?
+      return forward_emails_to if deliver_emails_to.empty?
 
       recipients.map do |recipient|
-        if regular_expressions.find { |regex| Regexp.new(regex, Regexp::IGNORECASE).match(recipient) }
+        if deliver_emails_to.find { |regex| Regexp.new(regex, Regexp::IGNORECASE).match(recipient) }
           recipient
         else
           forward_emails_to

@@ -16,14 +16,14 @@ gem 'mail_interceptor'
 # config/initializer/mail_interceptor.rb
 
 interceptor = MailInterceptor::Interceptor.new({ forward_emails_to: 'forward@domain.com',
-                                                 regular_expressions: ["@wheel.com"],
+                                                 deliver_emails_to: ["@wheel.com"],
                                                  subject_prefix: 'WHEEL' })
 ActionMailer::Base.register_interceptor(interceptor)
 ```
 
-#### regular_expressions
+#### deliver_emails_to
 
-Passing __regular_expressions__ is optional. If no "regular_expression"
+Passing __deliver_emails_to__ is optional. If no "deliver_emails_to"
 is passed then all emails will be forwarded.
 
 Let's say that you want to actually deliver all emails having the pattern
@@ -32,10 +32,10 @@ like `john@BigBinary.com` will not be intercepted and John will actually
 get an email in non-production environment.
 
 ```
-regular_expressions: ["@BigBinary.com"]
+deliver_emails_to: ["@BigBinary.com"]
 ```
 
-The regular expression is matched without case sesitive. So you can mix lowercase
+The regular expression is matched without case sensitive. So you can mix lowercase
 and uppercase and it won't matter.
 
 #### subject_prefix
