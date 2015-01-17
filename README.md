@@ -26,8 +26,10 @@ ActionMailer::Base.register_interceptor(interceptor)
 Passing __regular_expressions__ is optional. If no "regular_expression"
 is passed then all emails will be forwarded.
 
-Let's say that you want to deliver to all emails having the pattern
-"BigBinary.com" then pass a regular expression like this.
+Let's say that you want to actually deliver all emails having the pattern
+"@BigBinary.com" then pass a regular expression like this. Now emails
+like `john@BigBinary.com` will not be intercepted and John will actually
+get an email in non-production environment.
 
 ```
 regular_expressions: ["@BigBinary.com"]
