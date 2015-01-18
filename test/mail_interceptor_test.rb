@@ -37,7 +37,7 @@ class MailInterceptorTest < Minitest::Test
     interceptor = ::MailInterceptor::Interceptor.new forward_emails_to: 'test@example.com',
                                                        subject_prefix: nil
     @message.subject = 'Forgot password'
-    interceptor.stubs(:env).returns('test')
+    stub_env_methods(interceptor, 'test')
 
     interceptor.delivering_email @message
     assert_equal "Forgot password", @message.subject
@@ -47,7 +47,7 @@ class MailInterceptorTest < Minitest::Test
     interceptor = ::MailInterceptor::Interceptor.new forward_emails_to: 'test@example.com',
                                                        subject_prefix: 'wheel'
     @message.subject = 'Forgot password'
-    interceptor.stubs(:env).returns('test')
+    stub_env_methods(interceptor, 'test')
 
     interceptor.delivering_email @message
     assert_equal "[wheel TEST] Forgot password", @message.subject
@@ -57,9 +57,34 @@ class MailInterceptorTest < Minitest::Test
     interceptor = ::MailInterceptor::Interceptor.new forward_emails_to: 'test@example.com',
                                                        subject_prefix: 'wheel'
     @message.subject = 'Forgot password'
-    interceptor.stubs(:env).returns('production')
+    stub_env_methods(interceptor, 'production')
 
     interceptor.delivering_email @message
     assert_equal "[wheel] Forgot password", @message.subject
+  end
+
+  def test_error_if_foward_emails_to_is_empty
+    message = "forward_emails_to should not be empty"
+
+    exception = assert_raises(RuntimeError) do
+      ::MailInterceptor::Interceptor.new forward_emails_to: '',
+                                          subject_prefix: 'wheel'
+    end
+
+    assert_equal message, exception.message
+
+    exception =  assert_raises(RuntimeError) do
+      ::MailInterceptor::Interceptor.new forward_emails_to: [],
+                                          subject_prefix: 'wheel'
+    end
+
+    assert_equal message, exception.message
+  end
+
+  private
+
+  def stub_env_methods(interceptor, env)
+    interceptor.stubs(:env).returns(env)
+    interceptor.stubs(:production?).returns(env == 'production')
   end
 end
