@@ -63,7 +63,7 @@ class MailInterceptorTest < Minitest::Test
     assert_equal "[wheel] Forgot password", @message.subject
   end
 
-  def test_error_if_foward_emails_to_is_empty
+  def test_error_if_forward_emails_to_is_empty
     message = "forward_emails_to should not be empty"
 
     exception = assert_raises(RuntimeError) do

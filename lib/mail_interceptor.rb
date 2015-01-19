@@ -52,11 +52,7 @@ module MailInterceptor
     end
 
     def forward_emails_to_empty?
-      if forward_emails_to.is_a? Array
-        forward_emails_to.reject(&:blank?).blank?
-      else
-        forward_emails_to.blank?
-      end
+      Array.wrap(forward_emails_to).reject(&:blank?).empty?
     end
 
     def production?
