@@ -26,8 +26,8 @@ class MailInterceptorTest < Minitest::Test
   end
 
   def test_invocation_of_regular_expression
-    interceptor = ::MailInterceptor::Interceptor.new  forward_emails_to: 'test@example.com',
-                                                        deliver_emails_to: ['@wheel.com', '@pump.com', 'john@gmail.com']
+    interceptor = ::MailInterceptor::Interceptor.new forward_emails_to: 'test@example.com',
+                                                      deliver_emails_to: ['@wheel.com', '@pump.com', 'john@gmail.com']
     @message.to = [ 'a@wheel.com', 'b@wheel.com', 'c@pump.com', 'd@club.com', 'e@gmail.com', 'john@gmail.com', 'sam@gmail.com']
     interceptor.delivering_email @message
     assert_equal ["a@wheel.com", "b@wheel.com", "c@pump.com", "test@example.com", "john@gmail.com"], @message.to
@@ -75,6 +75,13 @@ class MailInterceptorTest < Minitest::Test
 
     exception =  assert_raises(RuntimeError) do
       ::MailInterceptor::Interceptor.new forward_emails_to: [],
+                                          subject_prefix: 'wheel'
+    end
+
+    assert_equal message, exception.message
+
+    exception =  assert_raises(RuntimeError) do
+      ::MailInterceptor::Interceptor.new forward_emails_to: [''],
                                           subject_prefix: 'wheel'
     end
 
