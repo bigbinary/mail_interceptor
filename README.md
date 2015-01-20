@@ -54,3 +54,9 @@ This is a required field.
 
 It can take a single email as string or it can take an array of emails
 in which case emails are forwarded to each of those emails in the array.
+
+
+#### Brought to you by
+
+
+![BigBinary](http://bigbinary.com/assets/common/logo.png)
