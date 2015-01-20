@@ -45,7 +45,7 @@ the front of the subject in non-production environment.
 
 ```
 [WHEEL] Forgot password
-[WHEEL STAGING] Forogt password
+[WHEEL STAGING] Forgot password
 ```
 
 #### forward_emails_to
