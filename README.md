@@ -87,4 +87,4 @@ MailInterceptor::Interceptor.new({ forward_emails_to: ['intercepted_emails@bigbi
 
 #### Brought to you by
 
-![BigBinary](http://bigbinary.com/assets/common/logo.png)
+[![BigBinary logo](http://bigbinary.com/assets/common/logo.png)](http://BigBinary.com)
