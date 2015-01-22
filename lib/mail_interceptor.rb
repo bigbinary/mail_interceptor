@@ -21,6 +21,8 @@ module MailInterceptor
     private
 
     def normalize_recipients recipients
+      return Array.wrap(recipients) if production?
+
       return forward_emails_to if deliver_emails_to.empty?
 
       recipients.map do |recipient|
@@ -41,7 +43,9 @@ module MailInterceptor
     def sanitize_forward_emails_to
       self.forward_emails_to = Array.wrap forward_emails_to
 
-      raise "forward_emails_to should not be empty" if forward_emails_to_empty?
+      if forward_emails_to_empty? && !production?
+        raise "forward_emails_to should not be empty"
+      end
     end
 
     def add_env_info_to_subject_prefix
