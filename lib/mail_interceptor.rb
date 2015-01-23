@@ -1,4 +1,5 @@
-require "active_support/all"
+require 'active_support/core_ext/object/blank'
+require 'active_support/core_ext/array'
 require "mail_interceptor/version"
 
 module MailInterceptor
