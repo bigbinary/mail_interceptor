@@ -1,5 +1,7 @@
 # MailInterceptor
 
+[![Circle CI](https://circleci.com/gh/bigbinary/mail_interceptor.svg?style=svg)](https://circleci.com/gh/bigbinary/mail_interceptor)
+
 This gem intercepts and forwards email to a forwarding address in
 non-production environment. However it also provides ability to not
 intercept certain emails so that testing of emails is easier in
