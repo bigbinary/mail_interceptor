@@ -12,13 +12,13 @@ in both production and non-production environment.
 
 Add this line to your application's Gemfile:
 
-```
+```ruby
 gem 'mail_interceptor'
 ```
 
 ## Usage
 
-```
+```ruby
 # config/initializer/mail_interceptor.rb
 
 options = { forward_emails_to: 'intercepted_emails@domain.com',
@@ -38,7 +38,7 @@ non-production environment.
 Let's say that you want to actually deliver all emails having the pattern
 "@BigBinary.com". Here is how it can be accomplished.
 
-```
+```ruby
 MailInterceptor::Interceptor.new({ forward_emails_to: 'intercepted_emails@domain.com',
                                    deliver_emails_to: ["@bigbinary.com"] })
 ```
@@ -46,7 +46,7 @@ MailInterceptor::Interceptor.new({ forward_emails_to: 'intercepted_emails@domain
 If you want the emails to be delivered only if the email address is
 `qa@bigbinary.com` then that can be done too.
 
-```
+```ruby
 MailInterceptor::Interceptor.new({ forward_emails_to: 'intercepted_emails@domain.com',
                                    deliver_emails_to: ["qa@bigbinary.com"] })
 ```
@@ -74,13 +74,13 @@ This is a required field.
 
 It takes a single email as string.
 
-```
+```ruby
 MailInterceptor::Interceptor.new({ forward_emails_to: 'intercepted_emails@bigbinary.com' })
 ```
 
 It can also take an array of emails in which case emails are forwarded to each of those emails in the array.
 
-```
+```ruby
 MailInterceptor::Interceptor.new({ forward_emails_to: ['intercepted_emails@bigbinary.com',
                                                        'qa@bigbinary.com' })
 ```
