@@ -1,3 +1,4 @@
+require "active_support/all"
 require "mail_interceptor/version"
 
 module MailInterceptor
