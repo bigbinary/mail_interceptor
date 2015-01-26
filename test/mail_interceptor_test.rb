@@ -49,6 +49,10 @@ class MailInterceptorTest < Minitest::Test
 
     interceptor.delivering_email @message
     assert_equal "[wheel TEST] Forgot password", @message.subject
+
+    @message.subject = 'Another Forgot password'
+    interceptor.delivering_email @message
+    assert_equal "[wheel TEST] Another Forgot password", @message.subject
   end
 
   def test_subject_prefix_in_production

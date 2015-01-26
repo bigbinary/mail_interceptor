@@ -11,11 +11,11 @@ module MailInterceptor
       @subject_prefix    = options[:subject_prefix] || ''
       @forward_emails_to = options.fetch :forward_emails_to
 
+      add_env_info_to_subject_prefix
       sanitize_forward_emails_to
     end
 
     def delivering_email message
-      add_env_info_to_subject_prefix
       add_subject_prefix message
       message.to = normalize_recipients(message.to).flatten.uniq
     end
