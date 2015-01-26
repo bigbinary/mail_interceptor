@@ -15,7 +15,6 @@ module MailInterceptor
     end
 
     def delivering_email message
-      add_env_info_to_subject_prefix
       add_subject_prefix message
       message.to = normalize_recipients(message.to).flatten.uniq
     end
@@ -39,7 +38,9 @@ module MailInterceptor
     def add_subject_prefix message
       return if subject_prefix.blank?
 
-      message.subject = "#{subject_prefix} #{message.subject}"
+      _subject_prefix_with_env = add_env_info_to_subject_prefix
+
+      message.subject = "#{_subject_prefix_with_env} #{message.subject}"
     end
 
     def sanitize_forward_emails_to
@@ -51,10 +52,8 @@ module MailInterceptor
     end
 
     def add_env_info_to_subject_prefix
-      return if subject_prefix.blank?
-
       _prefix = production? ? subject_prefix : "#{subject_prefix} #{env.upcase}"
-      self.subject_prefix = "[#{_prefix}]"
+      "[#{_prefix}]"
     end
 
     def forward_emails_to_empty?
