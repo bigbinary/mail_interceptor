@@ -55,6 +55,18 @@ class MailInterceptorTest < Minitest::Test
     assert_equal "[wheel TEST] Another Forgot password", @message.subject
   end
 
+  def test_subject_prefix_in_custom_staging
+    stub_env_methods('production')
+    interceptor = ::MailInterceptor::Interceptor.new env_name: 'staging',
+                                                     intercept_mail?: true,
+                                                     forward_emails_to: 'test@example.com',
+                                                     subject_prefix: 'wheel'
+    @message.subject = 'Forgot password'
+
+    interceptor.delivering_email @message
+    assert_equal "[wheel STAGING] Forgot password", @message.subject
+  end
+
   def test_subject_prefix_in_production
     stub_env_methods('production')
     interceptor = ::MailInterceptor::Interceptor.new forward_emails_to: 'test@example.com',
@@ -93,7 +105,7 @@ class MailInterceptorTest < Minitest::Test
   private
 
   def stub_env_methods(env)
-    ::MailInterceptor::Interceptor.any_instance.stubs(:env).returns(env)
-    ::MailInterceptor::Interceptor.any_instance.stubs(:production?).returns(env == 'production')
+    ::MailInterceptor::Interceptor.any_instance.stubs(:default_env_name).returns(env)
+    ::MailInterceptor::Interceptor.any_instance.stubs(:default_intercept_mail?).returns(env != 'production')
   end
 end

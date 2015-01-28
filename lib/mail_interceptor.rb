@@ -10,6 +10,8 @@ module MailInterceptor
       @deliver_emails_to = Array.wrap options[:deliver_emails_to]
       @subject_prefix    = options[:subject_prefix] || ''
       @forward_emails_to = options.fetch :forward_emails_to
+      @env_name          = options.fetch :env_name, default_env_name
+      @intercept_mail    = options.fetch :intercept_mail?, default_intercept_mail?
 
       add_env_info_to_subject_prefix
       sanitize_forward_emails_to
@@ -22,8 +24,13 @@ module MailInterceptor
 
     private
 
+    attr_reader :env_name
+    def intercept_mail?
+      @intercept_mail
+    end
+
     def normalize_recipients recipients
-      return Array.wrap(recipients) if production?
+      return Array.wrap(recipients) unless intercept_mail?
 
       return forward_emails_to if deliver_emails_to.empty?
 
@@ -45,7 +52,7 @@ module MailInterceptor
     def sanitize_forward_emails_to
       self.forward_emails_to = Array.wrap forward_emails_to
 
-      if forward_emails_to_empty? && !production?
+      if forward_emails_to_empty? && intercept_mail?
         raise "forward_emails_to should not be empty"
       end
     end
@@ -53,7 +60,7 @@ module MailInterceptor
     def add_env_info_to_subject_prefix
       return if subject_prefix.blank?
 
-      _prefix = production? ? subject_prefix : "#{subject_prefix} #{env.upcase}"
+      _prefix = intercept_mail? ? "#{subject_prefix} #{env_name.upcase}" : subject_prefix
       self.subject_prefix = "[#{_prefix}]"
     end
 
@@ -61,11 +68,11 @@ module MailInterceptor
       Array.wrap(forward_emails_to).reject(&:blank?).empty?
     end
 
-    def production?
-      env.production?
+    def default_intercept_mail?
+      !Rails.env.production?
     end
 
-    def env
+    def default_env_name
       Rails.env
     end
   end
