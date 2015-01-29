@@ -87,6 +87,29 @@ MailInterceptor::Interceptor.new({ forward_emails_to: ['intercepted_emails@bigbi
                                                        'qa@bigbinary.com' })
 ```
 
+### Custom environment
+
+If your staging environment is using the same Rails environment as
+production, you can pass in an object with the name of the environment
+and whether to intercept mail as an option. The default is to use
+`Rails.env` and intercept mail in all environments except production.
+
+```ruby
+class MyEnv
+  def name
+    ENV["INSTANCE_NAME"]
+  end
+
+  def intercept?
+    ENV["INTERCEPT_MAIL"] == '1'
+  end
+end
+
+MailInterceptor::Interceptor.new({ env: MyEnv.new,
+                                   forward_emails_to: ['intercepted_emails@bigbinary.com',
+                                   'qa@bigbinary.com' })
+```
+
 #### Brought to you by
 
 [![BigBinary logo](http://bigbinary.com/assets/common/logo.png)](http://BigBinary.com)
