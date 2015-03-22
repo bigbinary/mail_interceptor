@@ -28,8 +28,13 @@ options = { forward_emails_to: 'intercepted_emails@domain.com',
             subject_prefix: 'WHEEL' }
 
 interceptor = MailInterceptor::Interceptor.new(options)
-ActionMailer::Base.register_interceptor(interceptor)
+unless Rails.env.test?
+  ActionMailer::Base.register_interceptor(interceptor)
+end
 ```
+
+Do not use this feature in test mode so that in your tests
+you can test against real recipients of the email.
 
 ### deliver_emails_to
 

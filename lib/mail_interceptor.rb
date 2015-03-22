@@ -39,7 +39,6 @@ module MailInterceptor
 
     def add_subject_prefix message
       return if subject_prefix.blank?
-      return if !env.intercept?
 
       message.subject = "#{subject_prefix} #{message.subject}"
     end
@@ -70,8 +69,6 @@ module MailInterceptor
     end
 
     def intercept?
-      return false if Rails.env.test?
-
       !Rails.env.production?
     end
   end
