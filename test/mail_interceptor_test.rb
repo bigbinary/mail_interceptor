@@ -60,16 +60,6 @@ class MailInterceptorTest < Minitest::Test
     assert_equal "[wheel TEST] Another Forgot password", @message.subject
   end
 
-  def test_subject_prefix_in_production
-    interceptor = ::MailInterceptor::Interceptor.new env: env('production'),
-                                                     forward_emails_to: 'test@example.com',
-                                                     subject_prefix: 'wheel'
-    @message.subject = 'Forgot password'
-
-    interceptor.delivering_email @message
-    assert_equal "[wheel] Forgot password", @message.subject
-  end
-
   def test_error_if_forward_emails_to_is_empty
     message = "forward_emails_to should not be empty"
 

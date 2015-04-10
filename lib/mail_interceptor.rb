@@ -12,7 +12,6 @@ module MailInterceptor
       @forward_emails_to = options.fetch :forward_emails_to
       @env               = options.fetch :env, InterceptorEnv.new
 
-      add_env_info_to_subject_prefix
       sanitize_forward_emails_to
     end
 
@@ -40,7 +39,8 @@ module MailInterceptor
     def add_subject_prefix message
       return if subject_prefix.blank?
 
-      message.subject = "#{subject_prefix} #{message.subject}"
+      modified_subject_prefix = add_env_info_to_subject_prefix
+      message.subject = "#{modified_subject_prefix} #{message.subject}"
     end
 
     def sanitize_forward_emails_to
@@ -52,10 +52,7 @@ module MailInterceptor
     end
 
     def add_env_info_to_subject_prefix
-      return if subject_prefix.blank?
-
-      _prefix = env.intercept? ? "#{subject_prefix} #{env.name}" : subject_prefix
-      self.subject_prefix = "[#{_prefix}]"
+      "[#{subject_prefix} #{env.name}]"
     end
 
     def forward_emails_to_empty?
