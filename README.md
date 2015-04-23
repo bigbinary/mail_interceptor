@@ -7,15 +7,13 @@ non-production environment. However it also provides ability to not
 intercept certain emails so that testing of emails is easier in
 development/staging environment.
 
-If `subject_prefix` is supplied then that is added to every single email
-in both production and non-production environment.
-
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'mail_interceptor'
+# There is no need to include this gem for production or for test environment
+gem 'mail_interceptor', group: [:development, :staging]
 ```
 
 ## Usage
@@ -24,8 +22,7 @@ gem 'mail_interceptor'
 # config/initializer/mail_interceptor.rb
 
 options = { forward_emails_to: 'intercepted_emails@domain.com',
-            deliver_emails_to: ["@wheel.com"],
-            subject_prefix: 'WHEEL' }
+            deliver_emails_to: ["@wheel.com"] }
 
 interceptor = MailInterceptor::Interceptor.new(options)
 unless Rails.env.test?
@@ -63,17 +60,6 @@ will be intercepted and forwarded.
 
 The regular expression is matched without case sensitive. So you can mix lowercase
 and uppercase and it won't matter.
-
-### subject_prefix
-
-__subject_prefix__ is optional. If it is supplied then it is added to
-the front of the subject. In non-production environment the environment
-name is also added.
-
-```
-[WHEEL] Forgot password
-[WHEEL STAGING] Forgot password
-```
 
 ### forward_emails_to
 

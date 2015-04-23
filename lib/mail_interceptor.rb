@@ -4,11 +4,10 @@ require "mail_interceptor/version"
 
 module MailInterceptor
   class Interceptor
-    attr_accessor :deliver_emails_to, :forward_emails_to, :subject_prefix, :env
+    attr_accessor :deliver_emails_to, :forward_emails_to, :env
 
     def initialize options = {}
       @deliver_emails_to = Array.wrap options[:deliver_emails_to]
-      @subject_prefix    = options[:subject_prefix] || ''
       @forward_emails_to = options.fetch :forward_emails_to
       @env               = options.fetch :env, InterceptorEnv.new
 
@@ -16,7 +15,6 @@ module MailInterceptor
     end
 
     def delivering_email message
-      add_subject_prefix message
       message.to = normalize_recipients(message.to).flatten.uniq
     end
 
@@ -36,23 +34,12 @@ module MailInterceptor
       end
     end
 
-    def add_subject_prefix message
-      return if subject_prefix.blank?
-
-      modified_subject_prefix = add_env_info_to_subject_prefix
-      message.subject = "#{modified_subject_prefix} #{message.subject}"
-    end
-
     def sanitize_forward_emails_to
       self.forward_emails_to = Array.wrap forward_emails_to
 
       if forward_emails_to_empty? && env.intercept?
         raise "forward_emails_to should not be empty"
       end
-    end
-
-    def add_env_info_to_subject_prefix
-      "[#{subject_prefix} #{env.name}]"
     end
 
     def forward_emails_to_empty?
