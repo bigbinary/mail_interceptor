@@ -3,7 +3,7 @@
 [![Circle CI](https://circleci.com/gh/bigbinary/mail_interceptor.svg?style=svg)](https://circleci.com/gh/bigbinary/mail_interceptor)
 
 This gem intercepts and forwards email to a forwarding address in
-non-production environment. However it also provides ability to not
+a non-production environment. It also allows to not
 intercept certain emails so that testing of emails is easier in
 development/staging environment.
 
@@ -25,7 +25,8 @@ options = { forward_emails_to: 'intercepted_emails@domain.com',
             deliver_emails_to: ["@wheel.com"] }
 
 interceptor = MailInterceptor::Interceptor.new(options)
-unless Rails.env.test?
+
+unless (Rails.env.test? || Rails.env.production?)
   ActionMailer::Base.register_interceptor(interceptor)
 end
 ```
@@ -65,7 +66,7 @@ and uppercase and it won't matter.
 
 This is a required field.
 
-It takes a single email as string.
+It can take a single email or an array of emails.
 
 ```ruby
 MailInterceptor::Interceptor.new({ forward_emails_to: 'intercepted_emails@bigbinary.com' })
