@@ -79,6 +79,10 @@ MailInterceptor::Interceptor.new({ forward_emails_to: ['intercepted_emails@bigbi
                                                        'qa@bigbinary.com' })
 ```
 
+### ignore_bcc and ignore_cc
+
+By default bcc and cc are ignored. You can set `:ignore_bcc` or `:ignore_cc` to `false`, if you don't want to ignore bcc or cc.
+
 ### Custom environment
 
 By default all emails sent in non production environment are

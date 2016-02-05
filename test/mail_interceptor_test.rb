@@ -61,6 +61,28 @@ class MailInterceptorTest < Minitest::Test
     assert_equal message, exception.message
   end
 
+  def test_default_ignore_bcc_and_cc
+    interceptor = ::MailInterceptor::Interceptor.new env: env,
+                                                     forward_emails_to: 'test@example.com'
+    @message.bcc = ['bcc@example.com']
+    @message.cc  = ['cc@example.com']
+    interceptor.delivering_email @message
+    assert_equal [], @message.bcc
+    assert_equal [], @message.cc
+  end
+
+  def test_do_not_ignore_bcc_or_cc
+    interceptor = ::MailInterceptor::Interceptor.new env: env,
+                                                     forward_emails_to: 'test@example.com',
+                                                     ignore_bcc: false,
+                                                     ignore_cc: false
+    @message.bcc = ['bcc@example.com']
+    @message.cc  = ['cc@example.com']
+    interceptor.delivering_email @message
+    assert_equal ['bcc@example.com'], @message.bcc
+    assert_equal ['cc@example.com'], @message.cc
+  end
+
   private
 
   def env(environment = 'test')
