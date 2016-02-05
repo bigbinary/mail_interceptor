@@ -4,18 +4,22 @@ require "mail_interceptor/version"
 
 module MailInterceptor
   class Interceptor
-    attr_accessor :deliver_emails_to, :forward_emails_to, :env
+    attr_accessor :deliver_emails_to, :forward_emails_to, :env, :ignore_cc, :ignore_bcc
 
     def initialize options = {}
       @deliver_emails_to = Array.wrap options[:deliver_emails_to]
       @forward_emails_to = options.fetch :forward_emails_to
+      @ignore_cc         = options.fetch :ignore_cc, true
+      @ignore_bcc        = options.fetch :ignore_bcc, true
       @env               = options.fetch :env, InterceptorEnv.new
 
       sanitize_forward_emails_to
     end
 
     def delivering_email message
-      message.to = normalize_recipients(message.to).flatten.uniq
+      message.to  = normalize_recipients(message.to).flatten.uniq
+      message.cc  = [] if ignore_cc
+      message.bcc = [] if ignore_bcc
     end
 
     private
