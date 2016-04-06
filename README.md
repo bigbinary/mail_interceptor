@@ -81,7 +81,9 @@ MailInterceptor::Interceptor.new({ forward_emails_to: ['intercepted_emails@bigbi
 
 ### ignore_bcc and ignore_cc
 
-By default bcc and cc are ignored. You can set `:ignore_bcc` or `:ignore_cc` to `false`, if you don't want to ignore bcc or cc.
+By default bcc and cc are ignored. 
+You can pass `:ignore_bcc` or `:ignore_cc` options as `false`, 
+if you don't want to ignore bcc or cc.
 
 ### Custom environment
 
