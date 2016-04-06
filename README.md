@@ -118,5 +118,4 @@ MailInterceptor::Interceptor.new({ env: MyEnv.new,
 ```
 
 #### Brought to you by
-
-[![BigBinary logo](https://s3.amazonaws.com/bigbinary-media/logo2.png)](http://BigBinary.com)
+<a href='http://BigBinary.com'><img src="https://s3.amazonaws.com/bigbinary-media/horizontal/logo_blue.png" height="500px" width="110px"/></a>
