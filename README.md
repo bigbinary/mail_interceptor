@@ -81,8 +81,8 @@ MailInterceptor::Interceptor.new({ forward_emails_to: ['intercepted_emails@bigbi
 
 ### ignore_bcc and ignore_cc
 
-By default bcc and cc are ignored. 
-You can pass `:ignore_bcc` or `:ignore_cc` options as `false`, 
+By default bcc and cc are ignored.
+You can pass `:ignore_bcc` or `:ignore_cc` options as `false`,
 if you don't want to ignore bcc or cc.
 
 ### Custom environment
@@ -116,6 +116,11 @@ MailInterceptor::Interceptor.new({ env: MyEnv.new,
                                    forward_emails_to: ['intercepted_emails@bigbinary.com',
                                    'qa@bigbinary.com' })
 ```
+
+### Prefixing email with subject
+
+If you are looking for automatically prefix all delivered emails with the application name and Rails environment
+then we recommend using [email_prefixer gem](https://github.com/wireframe/email_prefixer) .
 
 #### Brought to you by
 <a href='http://BigBinary.com'><img src="https://s3.amazonaws.com/bigbinary-media/horizontal/logo_blue.png" width="200px"/></a>
