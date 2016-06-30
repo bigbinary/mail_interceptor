@@ -24,9 +24,8 @@ gem 'mail_interceptor', group: [:development, :staging]
 options = { forward_emails_to: 'intercepted_emails@domain.com',
             deliver_emails_to: ["@wheel.com"] }
 
-interceptor = MailInterceptor::Interceptor.new(options)
-
 unless (Rails.env.test? || Rails.env.production?)
+  interceptor = MailInterceptor::Interceptor.new(options)
   ActionMailer::Base.register_interceptor(interceptor)
 end
 ```
@@ -81,8 +80,8 @@ MailInterceptor::Interceptor.new({ forward_emails_to: ['intercepted_emails@bigbi
 
 ### ignore_bcc and ignore_cc
 
-By default bcc and cc are ignored. 
-You can pass `:ignore_bcc` or `:ignore_cc` options as `false`, 
+By default bcc and cc are ignored.
+You can pass `:ignore_bcc` or `:ignore_cc` options as `false`,
 if you don't want to ignore bcc or cc.
 
 ### Custom environment
