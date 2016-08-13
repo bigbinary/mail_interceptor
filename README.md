@@ -30,8 +30,8 @@ unless (Rails.env.test? || Rails.env.production?)
 end
 ```
 
-Do not use this feature in test mode so that in your tests
-you can test against real recipients of the email.
+Do not use this feature in test mode so that in tests
+you can test against provided recipients of the email.
 
 ### deliver_emails_to
 
