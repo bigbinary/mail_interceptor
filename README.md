@@ -9,7 +9,7 @@
 * [Usage](#usage)
 * [deliver_emails_to](#deliver_emails_to)
 * [forward_emails_to](#forward_emails_to)
-* [ignore_bcc and ignore_cc](#ignore_bcc and ignore_cc)
+* [ignore_bcc and ignore_cc](#ignore_bcc-and-ignore_cc)
 * [Custom Environment](#custom-environment)
 * [Prefixing email with subject](#prefixing-email-with-subject)
 
