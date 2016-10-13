@@ -2,6 +2,8 @@
 
 [![Circle CI](https://circleci.com/gh/bigbinary/mail_interceptor.svg?style=svg)](https://circleci.com/gh/bigbinary/mail_interceptor)
 
+## About
+
 This gem intercepts and forwards email to a forwarding address in
 a non-production environment. It also allows to not
 intercept certain emails so that testing of emails is easier in
@@ -116,10 +118,10 @@ MailInterceptor::Interceptor.new({ env: MyEnv.new,
                                    'qa@bigbinary.com' })
 ```
 
-### Prefixing email with subject
+## Prefixing email with subject
 
 If you are looking for automatically prefix all delivered emails with the application name and Rails environment
 then we recommend using [email_prefixer gem](https://github.com/wireframe/email_prefixer) .
 
-#### Brought to you by
+## Brought to you by
 <a href='http://BigBinary.com'><img src="https://s3.amazonaws.com/bigbinary-media/horizontal/logo_blue.png" width="200px"/></a>
