@@ -1,4 +1,4 @@
-# MailInterceptor
+# Mail Interceptor
 
 [![Circle CI](https://circleci.com/gh/bigbinary/mail_interceptor.svg?style=svg)](https://circleci.com/gh/bigbinary/mail_interceptor)
 
