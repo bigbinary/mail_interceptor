@@ -2,6 +2,17 @@
 
 [![Circle CI](https://circleci.com/gh/bigbinary/mail_interceptor.svg?style=svg)](https://circleci.com/gh/bigbinary/mail_interceptor)
 
+
+## TOC
+
+* [About](#about)
+* [Usage](#usage)
+* [deliver_emails_to](#deliver_emails_to)
+* [forward_emails_to](#forward_emails_to)
+* [ignore_bcc and ignore_cc](#ignore_bcc and ignore_cc)
+* [Custom Environment](#custom-environment)
+* [Prefixing email with subject](#prefixing-email-with-subject)
+
 ## About
 
 This gem intercepts and forwards email to a forwarding address in
@@ -9,16 +20,12 @@ a non-production environment. It also allows to not
 intercept certain emails so that testing of emails is easier in
 development/staging environment.
 
-## Installation
-
-Add this line to your application's Gemfile:
+## Usage
 
 ```ruby
 # There is no need to include this gem for production or for test environment
 gem 'mail_interceptor', group: [:development, :staging]
 ```
-
-## Usage
 
 ```ruby
 # config/initializers/mail_interceptor.rb
@@ -35,7 +42,7 @@ end
 Do not use this feature in test mode so that in tests
 you can test against provided recipients of the email.
 
-### deliver_emails_to
+## deliver_emails_to
 
 Passing __deliver_emails_to__ is optional. If no "deliver_emails_to"
 is passed then all emails will be intercepted and forwarded in
@@ -63,7 +70,7 @@ will be intercepted and forwarded.
 The regular expression is matched without case sensitive. So you can mix lowercase
 and uppercase and it won't matter.
 
-### forward_emails_to
+## forward_emails_to
 
 This is a required field.
 
@@ -80,13 +87,13 @@ MailInterceptor::Interceptor.new({ forward_emails_to: ['intercepted_emails@bigbi
                                                        'qa@bigbinary.com' })
 ```
 
-### ignore_bcc and ignore_cc
+## ignore_bcc and ignore_cc
 
 By default bcc and cc are ignored.
 You can pass `:ignore_bcc` or `:ignore_cc` options as `false`,
 if you don't want to ignore bcc or cc.
 
-### Custom environment
+## Custom Environment
 
 By default all emails sent in non production environment are
 intercepted. However you can control this behavior by passing `env` as
