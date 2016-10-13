@@ -19,7 +19,7 @@ gem 'mail_interceptor', group: [:development, :staging]
 ## Usage
 
 ```ruby
-# config/initializer/mail_interceptor.rb
+# config/initializers/mail_interceptor.rb
 
 options = { forward_emails_to: 'intercepted_emails@domain.com',
             deliver_emails_to: ["@wheel.com"] }
