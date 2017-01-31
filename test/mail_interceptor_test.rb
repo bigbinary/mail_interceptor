@@ -83,6 +83,25 @@ class MailInterceptorTest < Minitest::Test
     assert_equal ['cc@example.com'], @message.cc
   end
 
+  def test_subject_prefix
+    my_env = OpenStruct.new :name => "[Staging]", :intercept? => true
+    interceptor = ::MailInterceptor::Interceptor.new env: my_env,
+                                                     forward_emails_to: 'test@example.com'
+    @message.subject = "Welcome!"
+    interceptor.delivering_email @message
+    assert_equal "[Staging] Welcome!", @message.subject
+
+  end
+
+  def test_not_change_subject_prefix_if_intercept_is_false
+    my_env = OpenStruct.new :name => "[Staging]", :intercept? => false
+    interceptor = ::MailInterceptor::Interceptor.new env: my_env,
+                                                     forward_emails_to: 'test@example.com'
+    @message.subject = "Welcome!"
+    interceptor.delivering_email @message
+    assert_equal "Welcome!", @message.subject
+  end
+
   private
 
   def env(environment = 'test')

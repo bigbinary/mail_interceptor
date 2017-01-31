@@ -20,9 +20,16 @@ module MailInterceptor
       message.to  = normalize_recipients(message.to).flatten.uniq
       message.cc  = [] if ignore_cc
       message.bcc = [] if ignore_bcc
+      message.subject = subject_with_prefix(message)
     end
 
     private
+
+    def subject_with_prefix message
+      return message.subject unless env.intercept?
+      @origin_subject ||= message.subject
+      "#{env.name} #{@origin_subject}"
+    end
 
     def normalize_recipients recipients
       return Array.wrap(recipients) unless env.intercept?
