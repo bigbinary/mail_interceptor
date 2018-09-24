@@ -131,4 +131,4 @@ If you are looking for automatically prefix all delivered emails with the applic
 then we recommend using [email_prefixer gem](https://github.com/wireframe/email_prefixer) .
 
 ## Brought to you by
-<a href='http://BigBinary.com'><img src="https://s3.amazonaws.com/bigbinary-media/horizontal/logo_blue.png" width="200px"/></a>
+<a href='http://BigBinary.com'><img src="https://raw.githubusercontent.com/bigbinary/bigbinary-assets/press-assets/PNG/logo-light-solid-small.png?raw=true" width="200px"/></a>
