@@ -16,9 +16,21 @@
 ## About
 
 This gem intercepts and forwards email to a forwarding address in
-a non-production environment. It also allows to not
-intercept certain emails so that testing of emails is easier in
-development/staging environment.
+a non-production environment. This is to ensure that in staging or 
+in development by mistake we do not deliver emails to the real people. 
+However we need to test emails time to time. 
+
+Refer to https://github.com/bigbinary/wheel/blob/master/config/initializers/email_interceptor.rb
+and you will notice that if an email ends with `deliver@bigbinary.com` then that emaill will be delivered.
+
+So if Neeraj wants to test how the real email looks then he can use email `neeraj+deliver@bigbinary.com` and that email will be delivered. 
+As long as an email ends with `deliver@bigbinary.com` then that email will not be intercepted.
+
+If client wants to test something and the client expects an email to be delivered then we need to add client's email here. 
+Say the client's email is `michael@timbaktu.com`. 
+Change that line to deliver_emails_to: `["deliver@bigbinary.com", "timbaktu.com"]`. 
+Now all emails ending with `timbaktu.com` would be delivered. 
+If you want only Michael should get email and other emails ending with "timbaktu.com" to be intercepted then change that line to deliver_emails_to: `["deliver@bigbinary.com", "michael@timbaktu.com"]`.
 
 ## Usage
 
