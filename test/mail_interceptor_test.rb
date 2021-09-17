@@ -2,7 +2,6 @@ require 'rubygems'
 require 'bundler/setup'
 require 'minitest/autorun'
 require 'ostruct'
-require 'mocha/mini_test'
 require_relative './../lib/mail_interceptor'
 
 class MailInterceptorTest < Minitest::Test
@@ -31,34 +30,26 @@ class MailInterceptorTest < Minitest::Test
     interceptor = ::MailInterceptor::Interceptor.new env: env,
                                                      forward_emails_to: 'test@example.com',
                                                      deliver_emails_to: ['@wheel.com', '@pump.com', 'john@gmail.com']
-    @message.to = [ 'a@wheel.com', 'b@wheel.com', 'c@pump.com', 'd@club.com', 'e@gmail.com', 'john@gmail.com', 'sam@gmail.com']
+    @message.to = ['a@wheel.com', 'b@wheel.com', 'c@pump.com', 'd@club.com', 'e@gmail.com', 'john@gmail.com', 'sam@gmail.com']
     interceptor.delivering_email @message
-    assert_equal ["a@wheel.com", "b@wheel.com", "c@pump.com", "test@example.com", "john@gmail.com"], @message.to
+    assert_equal ['a@wheel.com', 'b@wheel.com', 'c@pump.com', 'test@example.com', 'john@gmail.com'], @message.to
   end
 
-  def test_error_if_forward_emails_to_is_empty
-    message = "forward_emails_to should not be empty"
+  def test_that_when_forward_emails_to_is_empty_then_emails_are_skipped
+    interceptor = ::MailInterceptor::Interceptor.new env: env, forward_emails_to: []
+    message = interceptor.delivering_email @message
 
-    exception = assert_raises(RuntimeError) do
-      ::MailInterceptor::Interceptor.new env: env,
-                                         forward_emails_to: ''
-    end
+    assert_equal false, @message.perform_deliveries
 
-    assert_equal message, exception.message
+    interceptor = ::MailInterceptor::Interceptor.new env: env, forward_emails_to: ""
+    message = interceptor.delivering_email @message
 
-    exception =  assert_raises(RuntimeError) do
-      ::MailInterceptor::Interceptor.new env: env,
-                                         forward_emails_to: []
-    end
+    assert_equal false, @message.perform_deliveries
 
-    assert_equal message, exception.message
+    interceptor = ::MailInterceptor::Interceptor.new env: env, forward_emails_to: ['']
+    message = interceptor.delivering_email @message
 
-    exception =  assert_raises(RuntimeError) do
-      ::MailInterceptor::Interceptor.new env: env,
-                                         forward_emails_to: ['']
-    end
-
-    assert_equal message, exception.message
+    assert_equal false, @message.perform_deliveries
   end
 
   def test_default_ignore_bcc_and_cc
