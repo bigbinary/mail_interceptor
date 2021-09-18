@@ -20,7 +20,7 @@ a non-production environment. This is to ensure that in staging or
 in development by mistake we do not deliver emails to the real people. 
 However we need to test emails time to time. 
 
-Refer to https://github.com/bigbinary/wheel/blob/master/config/initializers/email_interceptor.rb
+Refer to https://github.com/bigbinary/wheel/blob/master/config/initializers/mail_interceptor.rb
 and you will notice that if an email ends with `deliver@bigbinary.com` then that emaill will be delivered.
 
 So if Neeraj wants to test how the real email looks then he can use email `neeraj+deliver@bigbinary.com` and that email will be delivered. 
