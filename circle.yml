@@ -1,6 +1,18 @@
-machine:
+version: 2.1
 
-  # Version of ruby to use
-  ruby:
-    version:
-      2.2.2
+jobs:
+  build:
+    docker:
+      - image: cimg/ruby:3.0.2
+    steps:
+      - checkout
+
+      - run:
+          name: Build gem
+          command: gem build mail_interceptor
+
+      - run: bundle install
+
+      - run:
+          name: Run tests
+          command: bundle exec rake test
