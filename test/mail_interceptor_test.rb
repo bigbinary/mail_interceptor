@@ -5,7 +5,6 @@ require 'ostruct'
 require_relative './../lib/mail_interceptor'
 
 class MailInterceptorTest < Minitest::Test
-
   def setup
     @message = OpenStruct.new
   end
@@ -18,36 +17,43 @@ class MailInterceptorTest < Minitest::Test
     @interceptor = ::MailInterceptor::Interceptor.new env: env,
                                                       forward_emails_to: 'test@example.com',
                                                       deliver_emails_to: '@wheel.com'
-    assert_equal ["@wheel.com"], @interceptor.deliver_emails_to
+    assert_equal ['@wheel.com'], @interceptor.deliver_emails_to
 
     @interceptor = ::MailInterceptor::Interceptor.new  env: env,
                                                        forward_emails_to: 'test@example.com',
                                                        deliver_emails_to: ['@wheel.com', '@pump.com']
-    assert_equal ["@wheel.com", "@pump.com"], @interceptor.deliver_emails_to
+    assert_equal ['@wheel.com', '@pump.com'], @interceptor.deliver_emails_to
   end
 
   def test_invocation_of_regular_expression
     interceptor = ::MailInterceptor::Interceptor.new env: env,
                                                      forward_emails_to: 'test@example.com',
                                                      deliver_emails_to: ['@wheel.com', '@pump.com', 'john@gmail.com']
-    @message.to = ['a@wheel.com', 'b@wheel.com', 'c@pump.com', 'd@club.com', 'e@gmail.com', 'john@gmail.com', 'sam@gmail.com']
+    @message.to = [
+      'a@wheel.com', 'b@wheel.com', 'c@pump.com', 'd@club.com', 'e@gmail.com', 'john@gmail.com', 'sam@gmail.com'
+    ]
     interceptor.delivering_email @message
     assert_equal ['a@wheel.com', 'b@wheel.com', 'c@pump.com', 'test@example.com', 'john@gmail.com'], @message.to
   end
 
   def test_that_when_forward_emails_to_is_empty_then_emails_are_skipped
-    interceptor = ::MailInterceptor::Interceptor.new env: env, forward_emails_to: []
-    message = interceptor.delivering_email @message
+    interceptor = ::MailInterceptor::Interceptor.new env: env
+    interceptor.delivering_email @message
 
     assert_equal false, @message.perform_deliveries
 
-    interceptor = ::MailInterceptor::Interceptor.new env: env, forward_emails_to: ""
-    message = interceptor.delivering_email @message
+    interceptor = ::MailInterceptor::Interceptor.new env: env, forward_emails_to: []
+    interceptor.delivering_email @message
+
+    assert_equal false, @message.perform_deliveries
+
+    interceptor = ::MailInterceptor::Interceptor.new env: env, forward_emails_to: ''
+    interceptor.delivering_email @message
 
     assert_equal false, @message.perform_deliveries
 
     interceptor = ::MailInterceptor::Interceptor.new env: env, forward_emails_to: ['']
-    message = interceptor.delivering_email @message
+    interceptor.delivering_email @message
 
     assert_equal false, @message.perform_deliveries
   end

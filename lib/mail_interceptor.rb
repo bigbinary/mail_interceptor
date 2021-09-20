@@ -8,7 +8,7 @@ module MailInterceptor
 
     def initialize(options = {})
       @deliver_emails_to = Array.wrap options[:deliver_emails_to]
-      @forward_emails_to = options.fetch :forward_emails_to
+      @forward_emails_to = options.fetch :forward_emails_to, []
       @ignore_cc         = options.fetch :ignore_cc, true
       @ignore_bcc        = options.fetch :ignore_bcc, true
       @env               = options.fetch :env, InterceptorEnv.new
