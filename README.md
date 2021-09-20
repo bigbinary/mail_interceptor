@@ -56,7 +56,7 @@ you can test against provided recipients of the email.
 
 ## deliver_emails_to
 
-Passing __deliver_emails_to__ is optional. If no "deliver_emails_to"
+Passing `deliver_emails_to` is optional. If no `deliver_emails_to`
 is passed then all emails will be intercepted and forwarded in
 non-production environment.
 
@@ -84,7 +84,15 @@ and uppercase and it won't matter.
 
 ## forward_emails_to
 
-This is a required field.
+Passing `forward_emails_to` is optional. If no `forward_emails_to`
+is passed then all emails will be intercepted and
+only emails matching with `deliver_emails_to` will be delivered.
+
+Blank options can be provided to intercept and not send any emails.
+
+```ruby
+MailInterceptor::Interceptor.new({})
+```
 
 It can take a single email or an array of emails.
 
