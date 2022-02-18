@@ -1,3 +1,4 @@
+require "active_support/isolated_execution_state" # required because of https://github.com/rails/rails/issues/43851
 require 'active_support/core_ext/object/blank'
 require 'active_support/core_ext/array'
 require 'mail_interceptor/version'
