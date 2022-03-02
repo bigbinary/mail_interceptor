@@ -5,13 +5,17 @@
 
 ## TOC
 
-* [About](#about)
-* [Usage](#usage)
-* [deliver_emails_to](#deliver_emails_to)
-* [forward_emails_to](#forward_emails_to)
-* [ignore_bcc and ignore_cc](#ignore_bcc-and-ignore_cc)
-* [Custom Environment](#custom-environment)
-* [Prefixing email with subject](#prefixing-email-with-subject)
+- [Mail Interceptor](#mail-interceptor)
+  - [TOC](#toc)
+  - [About](#about)
+  - [Usage](#usage)
+  - [only_intercept](#only_intercept)
+  - [deliver_emails_to](#deliver_emails_to)
+  - [forward_emails_to](#forward_emails_to)
+  - [ignore_bcc and ignore_cc](#ignore_bcc-and-ignore_cc)
+  - [Custom Environment](#custom-environment)
+  - [Prefixing email with subject](#prefixing-email-with-subject)
+  - [Brought to you by](#brought-to-you-by)
 
 ## About
 
@@ -54,13 +58,39 @@ end
 Do not use this feature in test mode so that in tests
 you can test against provided recipients of the email.
 
+## only_intercept
+
+Passing `only_intercept` is optional. If `only_intercept` is passed then only emails
+having the pattern mentioned in `only_intercept` will be intercepted. Rest of the emails
+will be delivered.
+
+Let's say you want to only intercept emails ending with `@bigbinary.com` and forward the email.
+Here's how it can be accomplished.
+
+```ruby
+MailInterceptor::Interceptor.new({ forward_emails_to: 'intercepted_emails@domain.com',
+                                   only_intercept:  ["@bigbinary.com"] })
+```
+
+This will only intercept emails ending with `@bigbinary.com` and forward the emails. Every other
+email will be delivered.
+
+Suppose you want to intercept only some emails and not deliver them. You can do that by only
+passing the `only_intercept` option like so:
+
+```ruby
+MailInterceptor::Interceptor.new({ only_intercept: ["@bigbinary.com"] })
+```
+
+This will intercept emails ending with `@bigbinary` and not deliver them.
+
 ## deliver_emails_to
 
 Passing `deliver_emails_to` is optional. If no `deliver_emails_to`
 is passed then all emails will be intercepted and forwarded in
 non-production environment.
 
-Let's say that you want to actually deliver all emails having the pattern
+Let's say you want to actually deliver all emails having the pattern
 "@BigBinary.com". Here is how it can be accomplished.
 
 ```ruby
