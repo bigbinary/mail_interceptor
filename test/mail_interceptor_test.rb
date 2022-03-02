@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rubygems'
 require 'bundler/setup'
 require 'minitest/autorun'
@@ -34,6 +36,30 @@ class MailInterceptorTest < Minitest::Test
     ]
     interceptor.delivering_email @message
     assert_equal ['a@wheel.com', 'b@wheel.com', 'c@pump.com', 'test@example.com', 'john@gmail.com'], @message.to
+  end
+
+  def test_that_emails_are_not_sent_to_intercept_emails
+    interceptor = ::MailInterceptor::Interceptor.new env: prod_env,
+                                                     only_intercept: ['@wheel.com', '@pump.com']
+    assert_equal ['@wheel.com', '@pump.com'], interceptor.intercept_emails
+    @message.to = [
+      'a@wheel.com', 'b@wheel.com', 'c@pump.com', 'd@club.com', 'e@gmail.com', 'john@gmail.com', 'sam@gmail.com'
+    ]
+    interceptor.delivering_email @message
+    assert_equal ['d@club.com', 'e@gmail.com', 'john@gmail.com', 'sam@gmail.com'], @message.to
+  end
+
+  def test_that_only_intercept_option_takes_precedence_over_deliver_emails_to_option
+    interceptor = ::MailInterceptor::Interceptor.new env: prod_env,
+                                                     only_intercept: ['@wheel.com', '@pump.com'],
+                                                     forward_emails_to: ['incoming@example.com'],
+                                                     deliver_emails_to: ['@wheel.com', '@pump.com', 'john@gmail.com']
+    assert_equal ['@wheel.com', '@pump.com'], interceptor.intercept_emails
+    @message.to = [
+      'a@wheel.com', 'b@wheel.com', 'c@pump.com', 'd@club.com', 'e@gmail.com', 'john@gmail.com', 'sam@gmail.com'
+    ]
+    interceptor.delivering_email @message
+    assert_equal ['incoming@example.com', 'd@club.com', 'e@gmail.com', 'john@gmail.com', 'sam@gmail.com'], @message.to
   end
 
   def test_that_when_forward_emails_to_is_empty_then_emails_are_skipped
@@ -83,7 +109,12 @@ class MailInterceptorTest < Minitest::Test
   private
 
   def env(environment = 'test')
-    OpenStruct.new :name => environment.upcase,
-                   :intercept? => environment != 'production'
+    OpenStruct.new name: environment.upcase,
+                   intercept?: environment != 'production'
+  end
+
+  def prod_env(environment = 'production')
+    OpenStruct.new name: environment.upcase,
+                   intercept?: true
   end
 end
