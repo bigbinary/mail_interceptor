@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "active_support"
 require 'active_support/core_ext/object/blank'
 require 'active_support/core_ext/array'
 require 'mail_interceptor/version'
