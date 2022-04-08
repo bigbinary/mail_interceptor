@@ -6,6 +6,13 @@ require 'active_support/core_ext/array'
 require 'mail_interceptor/version'
 
 module MailInterceptor
+  mattr_accessor :enable_zerobounce_validation
+  @@enable_zerobounce_validation = false
+
+  def self.configure
+    yield self
+  end
+
   class Interceptor
     attr_accessor :deliver_emails_to, :forward_emails_to, :intercept_emails, :env, :recipients, :ignore_cc, :ignore_bcc
 
@@ -22,6 +29,8 @@ module MailInterceptor
     def delivering_email(message)
       @recipients = message.to
       to_emails_list = normalize_recipients
+
+      to_emails_list = to_emails_list.filter { |email| zerobounce_validate_email(email) } if MailInterceptor.enable_zerobounce_validation
 
       message.perform_deliveries = to_emails_list.present?
       message.to  = to_emails_list
@@ -68,6 +77,12 @@ module MailInterceptor
         []
       end
     end
+
+    def zerobounce_validate_email(email)
+      is_email_valid = Zerobounce.validate(email: email).valid?
+      print "Zerobounce validation for #{email} is #{is_email_valid ? 'valid' : 'invalid'}"
+      is_email_valid
+    end 
   end
 
   class InterceptorEnv
@@ -79,4 +94,6 @@ module MailInterceptor
       !Rails.env.production?
     end
   end
+
+  require 'mail_interceptor/railtie' if defined?(Rails) && Rails::VERSION::MAJOR >= 3
 end
