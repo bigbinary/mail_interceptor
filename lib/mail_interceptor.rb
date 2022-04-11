@@ -30,7 +30,7 @@ module MailInterceptor
       @recipients = message.to
       to_emails_list = normalize_recipients
 
-      to_emails_list = to_emails_list.filter { |email| zerobounce_validate_email(email) } if MailInterceptor.enable_zerobounce_validation
+      to_emails_list = to_emails_list.filter { |email| zerobounce_validate_email(email) } if zerobounce_enabled?
 
       message.perform_deliveries = to_emails_list.present?
       message.to  = to_emails_list
@@ -39,6 +39,10 @@ module MailInterceptor
     end
 
     private
+
+    def zerobounce_enabled?
+      MailInterceptor.enable_zerobounce_validation && Zerobounce.configuration.apikey.present?
+    end
 
     def normalize_recipients
       return Array.wrap(recipients) unless env.intercept?
@@ -80,7 +84,7 @@ module MailInterceptor
 
     def zerobounce_validate_email(email)
       is_email_valid = Zerobounce.validate(email: email).valid?
-      print "Zerobounce validation for #{email} is #{is_email_valid ? 'valid' : 'invalid'}"
+      print "Zerobounce validation for #{email} is #{is_email_valid ? 'valid' : 'invalid'}\n"
       is_email_valid
     end 
   end
