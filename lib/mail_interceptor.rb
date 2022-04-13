@@ -20,8 +20,8 @@ module MailInterceptor
       @deliver_emails_to = Array.wrap options[:deliver_emails_to]
       @forward_emails_to = Array.wrap options[:forward_emails_to]
       @intercept_emails  = options.fetch :only_intercept, []
-      @ignore_cc         = options.fetch :ignore_cc, true
-      @ignore_bcc        = options.fetch :ignore_bcc, true
+      @ignore_cc         = options.fetch :ignore_cc, false
+      @ignore_bcc        = options.fetch :ignore_bcc, false
       @env               = options.fetch :env, InterceptorEnv.new
       @recipients        = []
     end

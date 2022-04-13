@@ -84,9 +84,11 @@ class MailInterceptorTest < Minitest::Test
     assert_equal false, @message.perform_deliveries
   end
 
-  def test_default_ignore_bcc_and_cc
+  def test_ignore_bcc_and_cc
     interceptor = ::MailInterceptor::Interceptor.new env: env,
-                                                     forward_emails_to: 'test@example.com'
+                                                     forward_emails_to: 'test@example.com',
+                                                     ignore_bcc: true,
+                                                     ignore_cc: true
     @message.bcc = ['bcc@example.com']
     @message.cc  = ['cc@example.com']
     interceptor.delivering_email @message
