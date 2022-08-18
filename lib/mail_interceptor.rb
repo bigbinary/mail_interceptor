@@ -83,6 +83,7 @@ module MailInterceptor
     end
 
     def zerobounce_validate_email(email)
+      return true if email.end_with? "privaterelay.appleid.com"
       is_email_valid = Zerobounce.validate(email: email).valid?
       print "Zerobounce validation for #{email} is #{is_email_valid ? 'valid' : 'invalid'}\n"
       is_email_valid
