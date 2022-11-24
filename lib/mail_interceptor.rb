@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "active_support"
+require 'active_support'
 require 'active_support/core_ext/object/blank'
 require 'active_support/core_ext/array'
 require 'mail_interceptor/version'
@@ -83,11 +83,17 @@ module MailInterceptor
     end
 
     def zerobounce_validate_email(email)
-      return true if email.end_with? "privaterelay.appleid.com"
-      is_email_valid = Zerobounce.validate(email: email).valid?
-      print "Zerobounce validation for #{email} is #{is_email_valid ? 'valid' : 'invalid'}\n"
-      is_email_valid
-    end 
+      return true if email.end_with? 'privaterelay.appleid.com'
+
+      validated_email = Zerobounce.validate(email: email)
+      print "Zerobounce validation for #{email} is #{validated_email.valid? ? 'valid' : 'invalid'}\n"
+
+      if validated_email.invalid? && defined? ZerobounceFailureLog
+        ZerobounceFailureLog.create(email: email, status: validated_email.status,
+                                    sub_status: validated_email.sub_status)
+      end
+      validated_email.valid?
+    end
   end
 
   class InterceptorEnv
