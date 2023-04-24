@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-gem 'rails', '~> 6.1.0'
+gem 'rails', '7.0.3.1'
 
 # Specify your gem's dependencies in mail_interceptor.gemspec
 gemspec
