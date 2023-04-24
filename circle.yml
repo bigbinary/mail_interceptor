@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: cimg/ruby:3.0.2
+      - image: cimg/ruby:3.2.2
     steps:
       - checkout
 
