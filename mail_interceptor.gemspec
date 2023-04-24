@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
 
   spec.required_ruby_version = ">= 3.0"
 
-  spec.add_runtime_dependency "activesupport", ">= 6"
+  spec.add_runtime_dependency "activesupport", ">= 7"
   spec.add_runtime_dependency "zerobounce", "~> 0.3.1"
   spec.add_development_dependency "bundler", "~> 2"
   spec.add_development_dependency "minitest", "~> 5"
