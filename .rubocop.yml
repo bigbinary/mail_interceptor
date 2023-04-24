@@ -1,0 +1,625 @@
+# cspell:Disable
+require:
+  - rubocop-rails
+
+AllCops:
+  TargetRubyVersion: 3.1.3
+  # RuboCop has a bunch of cops enabled by default. This setting tells RuboCop
+  # to ignore them, so only the ones explicitly set in this file are enabled.
+  DisabledByDefault: true
+  # From time to time rubocop adds new cops to say rails etc.
+  # So rather than disabling them it's better to enable them,
+  # try it out and then disable them manually one by one.
+  NewCops: enable
+  Exclude:
+    - "app/javascript/**/*"
+    - "app/assets/**/*"
+    - "app/views/**/*.erb"
+    - "lib/tasks/**/*"
+    - ".vscode/**/*"
+    - ".husky/**/*"
+    - ".bundle/**/*"
+    - ".circleci/**/*"
+    - ".semaphore/**/*"
+    - "**/log/**/*"
+    - "**/public/**/*"
+    - "**/tmp/**/*"
+    - "**/templates/**/*"
+    - "**/vendor/**/*"
+    - "node_modules/**/*"
+    - "bin/**/*"
+    - "config/webpack/**/*"
+    - "db/schema.rb"
+    - "test/dummy/db/schema.rb"
+
+# ====================================================================================================
+# All access modifier related rules
+# ====================================================================================================
+# Add a newline before and after private keyword or other access modifiers
+Layout/EmptyLinesAroundAccessModifier:
+  Enabled: true
+
+# This cop checks for redundant access modifiers, including those with no code,
+# those which are repeated, and leading `public` modifiers in a class or module body.
+Lint/UselessAccessModifier:
+  Enabled: true
+
+# Checks for debug calls
+Lint/Debugger:
+  Enabled: true
+
+# # bad
+# class Foo
+#   private def bar; end
+#   private def baz; end
+# end
+# # good
+# class Foo
+#   private
+#
+#   def bar; end
+#   def baz; end
+# end
+Style/AccessModifierDeclarations:
+  Enabled: true
+
+# # bad
+# class Plumbus
+# private
+#   def smooth; end
+# end
+# # good
+# class Plumbus
+#   private
+#   def smooth; end
+# end
+Layout/AccessModifierIndentation:
+  Enabled: true
+
+# ====================================================================================================
+# All comment related rules
+# ====================================================================================================
+# Align comments with method definitions.
+Layout/CommentIndentation:
+  Enabled: true
+
+# Requires an empty line after frozen_string_literal: true comment
+Layout/EmptyLineAfterMagicComment:
+  Enabled: true
+
+# frozen_string_literal: true magic comment is required on the top of files
+Style/FrozenStringLiteralComment:
+  Enabled: true
+  EnforcedStyle: always
+  SafeAutoCorrect: true
+
+# ====================================================================================================
+# All Class related rules
+# ====================================================================================================
+# Helps in brining the include statements etc to top of the class definition
+Layout/ClassStructure:
+  Enabled: true
+  Description: "Enforces a canonical order of definitions within a class body."
+  StyleGuide: "https://github.com/rubocop/rails-style-guide#macro-style-methods"
+  Categories:
+    module_inclusions:
+      - include
+      - prepend
+      - extend
+    third_party:
+      - neeto_sso_track_widget_tokens
+      - devise
+    scopes:
+      - default_scope
+      - scope
+    attributes:
+      - attribute
+      - attr_reader
+      - attr_writer
+      - attr_accessor
+    enum:
+      - enum
+    store:
+      # https://api.rubyonrails.org/classes/ActiveRecord/Store.html
+      - store
+    associations:
+      - belongs_to
+      - has_one
+      - has_many
+      - has_and_belongs_to_many
+    other_macros:
+      - delegate
+      - accepts_nested_attributes_for
+    validations:
+      - validate
+      - validates
+      - validates_acceptance_of
+      - validates_associated
+      - validates_confirmation_of
+      - validates_exclusion_of
+      - validates_format_of
+      - validates_inclusion_of
+      - validates_length_of
+      - validates_numericality_of
+      - validates_presence_of
+      - validates_uniqueness_of
+      - validates_each
+      - validate_with
+    callbacks:
+      - before_validation
+      - after_validation
+      - before_save
+      - around_save
+      - after_save
+      - before_update
+      - around_update
+      - after_update
+      - before_create
+      - after_create
+      - before_destroy
+      - around_destroy
+      - after_destroy
+      - after_commit
+      - after_create_commit
+  ExpectedOrder:
+      - module_inclusions
+      - third_party
+      - scopes
+      - constants
+      - attributes
+      - enum
+      - store
+      - associations
+      - validations
+      - callbacks
+      - other_macros
+      - initializer
+      - public_class_methods
+      - public_methods
+      - protected_methods
+      - private_methods
+
+# In a regular class definition, no empty lines around the body.
+# bad
+# class Foo
+#
+#   def bar
+#     # ...
+#   end
+#
+# end
+#
+# good
+# class Foo
+#   def bar
+#     # ...
+#   end
+# end
+Layout/EmptyLinesAroundClassBody:
+  Enabled: true
+
+# ====================================================================================================
+# All Method related rules
+# ====================================================================================================
+# This cop checks whether class/module/method definitions are separated by one or more empty lines.
+Layout/EmptyLineBetweenDefs:
+  Enabled: true
+
+# This cop checks the . position in multi-line method calls.
+# The dot should be leading rather than trailing.
+Layout/DotPosition:
+  Enabled: true
+  EnforcedStyle: leading
+
+# No space in method name and the arguments
+Lint/ParenthesesAsGroupedExpression:
+  Enabled: true
+
+# Use my_method(my_arg) not my_method( my_arg ) or my_method my_arg,
+# when a boolean operator, && or ||, is chained along with this method/argument
+Lint/RequireParentheses:
+  Enabled: true
+
+# avoid redundant `return` expressions
+Style/RedundantReturn:
+  Enabled: true
+  AllowMultipleReturnValues: true
+
+# Ensures that exactly one space is used between a method name and the
+# first argument for method calls without parentheses
+Layout/SpaceBeforeFirstArg:
+  Enabled: true
+
+# Methods that doesn't take any parameters shouldn't have paranthesis in its definition
+Style/DefWithParentheses:
+  Enabled: true
+
+# Defining a method with parameters needs parentheses.
+Style/MethodDefParentheses:
+  Enabled: true
+
+# # bad
+# def some_method(arg1=:default, arg2=nil, arg3=[])
+# # good
+# def some_method(arg1 = :default, arg2 = nil, arg3 = [])
+Layout/SpaceAroundEqualsInParameterDefault:
+  Enabled: true
+
+# This cop checks for a line break before the first argument in a multi-line method call.
+# # bad
+# method(foo, bar,
+#   baz)
+# # good
+# method(
+#   foo, bar,
+#   baz)
+Layout/FirstMethodArgumentLineBreak:
+  Enabled: true
+
+# Method definitions after `private` or `protected` isolated calls need one
+# extra level of indentation.
+Layout/IndentationConsistency:
+  Enabled: true
+  EnforcedStyle: indented_internal_methods
+
+# This cop checks the indentation of the method name part in method calls that span more than one line.
+# # bad
+# while myvariable
+# .instance_method_call1
+# .instance_method_call2
+#   # do something
+# end
+#
+# # good
+# while myvariable
+#   .instance_method_call1
+#   .instance_method_call2
+#
+#   # do something
+# end
+Layout/MultilineMethodCallIndentation:
+  Enabled: true
+  EnforcedStyle: indented
+
+# This cop ensures the indentation of the first parameter in a method definition.
+Layout/FirstParameterIndentation:
+  Enabled: true
+  EnforcedStyle: consistent
+
+# When we write method arguments in next line, indent it.
+Layout/FirstArgumentIndentation:
+  Enabled: true
+  EnforcedStyle: consistent
+
+# Alignment of args from second argument onwards should be indented
+# # bad
+# json.extract! comment,
+# :id,
+# :content,
+# :created_at
+# # good
+# json.extract! comment,
+#   :id,
+#   :content,
+#   :created_at
+Layout/ArgumentAlignment:
+  Enabled: true
+  EnforcedStyle: with_fixed_indentation
+
+# In a regular method definition, no empty lines around the body.
+Layout/EmptyLinesAroundMethodBody:
+  Enabled: true
+
+# ====================================================================================================
+# All Hash related rules
+# ====================================================================================================
+# EnforcedColonStyle: key
+# # bad
+# {
+#   foo: bar,
+#    ba: baz
+# }
+# {
+#   foo: bar,
+#   ba:  baz
+# }
+# # good
+# {
+#   foo: bar,
+#   ba: baz
+# }
+# EnforcedLastArgumentHashStyle: always_inspect
+# # bad
+# do_something({foo: 1,
+#   bar: 2})
+# # good
+# do_something(foo: 1,
+#              bar: 2)
+Layout/HashAlignment:
+  Enabled: true
+  EnforcedColonStyle: key
+  EnforcedLastArgumentHashStyle: always_inspect
+
+# This cop checks for a line break before the first element in a multi-line hash.
+# # bad
+# { a: 1,
+#   b: 2}
+# # good
+# {
+#   a: 1,
+#   b: 2 }
+Layout/FirstHashElementLineBreak:
+  Enabled: true
+
+# When using the `new_line` style:
+# The closing brace of a multi-line hash literal must be on
+# the line after the last element of the hash.
+Layout/MultilineHashBraceLayout:
+  Enabled: true
+  EnforcedStyle: new_line
+
+# # bad
+# hash = {
+#   key: :value
+# }
+# but_in_a_method_call({
+#                        its_like: :this
+#                       })
+# # good
+# hash = {
+#   key: :value
+# }
+# and_in_a_method_call({
+#   no: :difference
+# })
+Layout/FirstHashElementIndentation:
+  Enabled: true
+  EnforcedStyle: consistent
+
+# Use Ruby >= 1.9 syntax for hashes. Prefer { a: :b } over { :a => :b }.
+Style/HashSyntax:
+  Enabled: true
+
+# Use `{ a: 1 }` not `{a:1}`.
+Layout/SpaceInsideHashLiteralBraces:
+  Enabled: true
+
+# `no_comma`: Does not requires a comma after the last item in a hash
+Style/TrailingCommaInHashLiteral:
+  Enabled: true
+
+# ====================================================================================================
+# All misc whitespace related rules
+# ====================================================================================================
+# bad
+# def f(a:, b:2); {a:3}; end
+# good
+# def f(a:, b: 2); {a: 3}; end
+Layout/SpaceAfterColon:
+  Enabled: true
+
+# Ensures comma (,) is followed by some kind of space.
+Layout/SpaceAfterComma:
+  Enabled: true
+
+# Every ruby keyword should be surrounded by spaces
+Layout/SpaceAroundKeyword:
+  Enabled: true
+
+# Requires proper spacing around ruby operator symbols.
+Layout/SpaceAroundOperators:
+  Enabled: true
+  ## Allows multiple spaces for keeping alignment
+  # {
+  #   1 =>  2,
+  #   11 => 3
+  # }
+  AllowForAlignment: true
+
+# Ensures comma symbol is not preceded by space
+Layout/SpaceBeforeComma:
+  Enabled: true
+
+# Use `foo {}` not `foo{}`.
+Layout/SpaceBeforeBlockBraces:
+  Enabled: true
+
+# Use `foo { bar }` not `foo {bar}`.
+Layout/SpaceInsideBlockBraces:
+  Enabled: true
+
+# enforces that parentheses do not have spaces
+Layout/SpaceInsideParens:
+  Enabled: true
+
+# No trailing whitespace.
+Layout/TrailingWhitespace:
+  Enabled: true
+
+# Require a space after comment
+Layout/LeadingCommentSpace:
+  Enabled: true
+
+# ====================================================================================================
+# All empty lines related rules
+# ====================================================================================================
+# The `lf` style means that LF (Line Feed) is enforced on
+# all platforms.
+# # bad
+# puts 'Hello' # Return character is CR+LF on all platfoms.
+#
+# # good
+# puts 'Hello' # Return character is LF on all platfoms.
+Layout/EndOfLine:
+  Enabled: true
+  EnforcedStyle: lf
+
+# In a regular module definition, no empty lines around the body.
+Layout/EmptyLinesAroundModuleBody:
+  Enabled: true
+
+# # bad
+# def foo
+#   return if need_return?
+#   bar
+# end
+#
+# # good
+# def foo
+#   return if need_return?
+#
+#   bar
+# end
+Layout/EmptyLineAfterGuardClause:
+  Enabled: true
+
+# Requires a single final blank line to the file.
+# `final_blank_line` ensures a blank line before EOF.
+# # bad
+# class Foo; end # EOF
+#
+# # good
+# class Foo; end
+#
+# # EOF
+Layout/TrailingEmptyLines:
+  Enabled: true
+
+# This cop checks for two or more consecutive blank lines.
+# This rule is not same as TrailingEmptyLines, because:
+# 1) It looks for empty lines throughout the file. Not just the end.
+# # bad - It has two empty lines.
+# some_method
+# # one empty line
+# # two empty lines
+# some_method
+#
+# # good
+# some_method
+# # one empty line
+# some_method
+Layout/EmptyLines:
+  Enabled: true
+
+# ====================================================================================================
+# All naming convetion related rules for variables
+# ====================================================================================================
+# Refer: https://www.bigbinary.com/learn-rubyonrails-book/n+1-queries-and-memoization#bb-generated-p-id-44
+# Sadly this cannot be auto-corrected.
+Naming/MemoizedInstanceVariableName:
+  Enabled: true
+  EnforcedStyleForLeadingUnderscores: required
+
+# ====================================================================================================
+# All misc rules that don't fall into other categories
+# ====================================================================================================
+# Prefer &&/|| over and/or.
+Style/AndOr:
+  Enabled: true
+
+# Align `when` with `case`.
+Layout/CaseIndentation:
+  Enabled: true
+
+Layout/LineLength:
+  Enabled: true
+  Max: 120
+  AllowedPatterns: [
+    '^\s*#', # line that begins with comment
+    '^\s*"', # line that begins with double quote (long string literal)
+    '^\s*%{', # line that begins with percent literals (long string literal)
+    "^\\s*'", # line that begins with single quote (long string literal)
+    '"$', # line that ends with double quote (long string variable assignment)
+    "'$", # line that ends with single quote (long string variable assignment)
+    '}$', # line that ends with percent literals (long regex variable assignment)
+    '\/$', # line that ends with slash (long regex variable assignment)
+  ]
+
+# Indent using two spaces
+Layout/IndentationWidth:
+  Enabled: true
+  Width: 2
+
+# Use spaces for indentation. Not tabs
+Layout/IndentationStyle:
+  Enabled: true
+  EnforcedStyle: spaces
+
+# Remove extra/unnecessary whitespace which's used for alignment.
+# A developer shouldn't waste time indenting code with whitespaces.
+Layout/ExtraSpacing:
+  Enabled: true
+  AllowForAlignment: false
+
+# Helps in removing unwanted parentheses.
+# # bad
+# x += 1 while (x < 10)
+# foo unless (bar || baz)
+#
+# if (x > 10)
+# elsif (x < 3)
+# end
+#
+# # good
+# x += 1 while x < 10
+# foo unless bar || baz
+#
+# if x > 10
+# elsif x < 3
+# end
+Style/ParenthesesAroundCondition:
+  Enabled: true
+
+# Enforce string literals to use double quotes everywhere
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: double_quotes
+
+# Use quotes for string literals when they are enough.
+Style/RedundantPercentQ:
+  Enabled: true
+
+# Align `end` with the matching keyword or starting expression except for
+# assignments, where it should be aligned with the LHS.
+Layout/EndAlignment:
+  Enabled: true
+  EnforcedStyleAlignWith: variable
+
+# avoid lines terminated with a semicolon.
+Style/Semicolon:
+  Enabled: true
+  # disallow multiple statements in a line
+  AllowAsExpressionSeparator: false
+
+# Corrects usage of :true/:false to true/false
+Lint/BooleanSymbol:
+  Enabled: true
+
+# ====================================================================================================
+# All flow(if/while/for/until) statements related
+# ====================================================================================================
+Lint/AssignmentInCondition:
+  Enabled: true
+  AllowSafeAssignment: true
+
+# ====================================================================================================
+# All Bundler cop rules
+# ====================================================================================================
+Bundler/OrderedGems:
+  Enabled: true
+  TreatCommentsAsGroupSeparators: true
+
+# ====================================================================================================
+# All Rails cop rules
+# ====================================================================================================
+# Enabled Rails cops for the command for VSCode linting and while running rubocop -a
+Rails:
+  Enabled: false
+
+# Correct usage of Date methods in Rails. Use Time.zone.today over Date.today
+Rails/Date:
+  Enabled: true
+
+# Correct usage of TimeZone methods in Rails
+Rails/TimeZone:
+  Enabled: true
