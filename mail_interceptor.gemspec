@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Neeraj Singh']
   spec.email         = ['neeraj@BigBinary.com']
   spec.summary       = 'Intercepts and forwards emails in non production environment'
-  spec.homepage      = 'http://github.com/bigbinary/mail_interceptor'
+  spec.homepage      = 'https://github.com/bigbinary/mail_interceptor'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0")
