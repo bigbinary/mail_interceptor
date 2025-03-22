@@ -1,12 +1,6 @@
 # Mail Interceptor
 
-[![Circle CI](https://circleci.com/gh/bigbinary/mail_interceptor.svg?style=svg)](https://circleci.com/gh/bigbinary/mail_interceptor)
-
-
-## TOC
-
 - [Mail Interceptor](#mail-interceptor)
-  - [TOC](#toc)
   - [About](#about)
   - [Usage](#usage)
   - [only_intercept](#only_intercept)
